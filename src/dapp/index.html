@@ -7,26 +7,657 @@
     <title>FlightSurety</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    // Provide jQuery framework
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+
+    .container {
+        margin-top: 100px !important;
+    }
+
+    .nav .logo {
+        font-size: 2rem;
+    }
+
+    .nav ul {
+        display: inline-block;
+    }
+
+    .nav ul li {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    .box {
+        display: inline-block;
+        width: 100%;
+        margin: 50px auto;
+        border: 0.5px solid lightgrey;
+        border-radius: 3px;
+        padding: 40px 50px;
+        box-sizing: border-box;
+    }
+
+    .box h2 {
+        font-size: 1.7rem;
+
+    }
+
+    .box input, .box select {
+        width: 40%;
+        padding: 5px 10px;
+        margin: 10px auto;
+    }
+
+    .box button {
+        padding: 7px 20px;
+    }
+
+    </style>
+
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">FlightSurety</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
+<div class="container">
 
-    <main class="container">
+    <div class="nav">
 
-        <div id="display-wrapper" class="top-20">
+        <div class="logo">
+            FlightSurety
         </div>
-        <div class="row top-20">
-            <label class="form">Flight</label> <input type="text" id="flight-number"> <btn class="btn btn-primary" id="submit-oracle">Submit to Oracles</btn>
+        <ul>
+            <a href="#registerAirline"><li>Register Airline</li></a>
+            <a href="#fundAirline"><li>Fund Airline</li></a>
+            <a href="#createFlight"><li>Create Flight</li></a>
+            <a href="#insureFlight"><li>Insure Flight</li></a>
+            <a href="#requestFlightStatus"><li>Request Flight Status</li></a>
+            <a href="#checkFunds"><li>Check Refund Credit</li></a>
+            <a href="#withdrawRefunds"><li>Withdraw Refunds</li></a>
+        </ul>
+    </div>
+
+    <div class="box">
+        <a name="registerAirline"></a>
+        <h2>Register Airline</h2>
+        <div class="registerAirlines">
+            <select name="airlines">
+                <option value="allNipon">ANA All Nippon Airways</option>
+                <option value="cathayPacific">Cathay Pacific Airways</option>
+                <option value="emirates">Emirates</option>
+                <option value="evaAir">EVA Air</option>
+                <option value="garudaIndonesia">Garuda Indonesia</option>
+                <option value="hainanAirlines">Hainan Airlines</option>
+                <option value="klmAirfrance">KLM-Airfrance</option>
+                <option value="lufthansa">Lufthansa</option>
+                <option value="signaporeAirlines">Signapore Airlines</option>
+                <option value="qatarAirways">Qatar Airways</option>
+            </select>
+            <button onclick="registerAirline();">Register Airline</button>
         </div>
-    </main>
+    </div>
+
+    <div class="box">
+        <a name="fundAirline"></a>
+        <h2>Fund Airline</h2>
+        <div class="fundAirline">
+            <button onclick="fundAirline();">Fund my Airline</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <a name="createFlight"></a>
+        <h2>Create Flight</h2>
+        <div class="createFlight">
+            <input placeholder="Flight name such as 'KLM001'" name="flightName">
+            <input placeholder="Timestamp such as '201904041894'" name="timestamp">
+            <button onclick="createFlight();">Create Flight</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <a name="insureFlight"></a>
+        <h2>Insure a Flight</h2>
+        <div class="insureFlight">
+            <select name="airlines">
+                <option value="allNipon">ANA All Nippon Airways</option>
+                <option value="cathayPacific">Cathay Pacific Airways</option>
+                <option value="emirates">Emirates</option>
+                <option value="evaAir">EVA Air</option>
+                <option value="garudaIndonesia">Garuda Indonesia</option>
+                <option value="hainanAirlines">Hainan Airlines</option>
+                <option value="klmAirfrance">KLM-Airfrance</option>
+                <option value="lufthansa">Lufthansa</option>
+                <option value="signaporeAirlines">Signapore Airlines</option>
+                <option value="qatarAirways">Qatar Airways</option>
+            </select>
+            <input placeholder="Flight name such as 'KLM001'" name="flightName">
+            <input placeholder="Timestamp such as '201904041894'" name="timestamp">
+            <input type="number" name="insuredValue" value="0.5" step="0.1" max="1" min="0.1"> ETH
+            <button  onclick="insureFlight();">Insure Flight</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <a name="requestFlightStatus"></a>
+        <h2>Request Flight Status</h2>
+        <div class="requestFlightStatus">
+            <select name="airlines">
+                <option value="allNipon">ANA All Nippon Airways</option>
+                <option value="cathayPacific">Cathay Pacific Airways</option>
+                <option value="emirates">Emirates</option>
+                <option value="evaAir">EVA Air</option>
+                <option value="garudaIndonesia">Garuda Indonesia</option>
+                <option value="hainanAirlines">Hainan Airlines</option>
+                <option value="klmAirfrance">KLM-Airfrance</option>
+                <option value="lufthansa">Lufthansa</option>
+                <option value="signaporeAirlines">Signapore Airlines</option>
+                <option value="qatarAirways">Qatar Airways</option>
+            </select>
+            <input placeholder="Flight name such as 'KLM001'" name="flightName">
+            <input placeholder="Timestamp such as '201904041894'" name="timestamp">
+            <button onclick="requestFlightStatus();">Submit</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <a name="checkFunds"></a>
+        <h2>Check Refund Credit</h2><p class="fundsValue"></p>
+        <div class="checkFunds">
+            <button onclick="checkFunds();">Check Funds</button>
+        </div>
+    </div>
+
+
+    <div class="box">
+        <a name="withdrawRefunds"></a>
+        <h2>Withdraw Refunds</h2>
+        <div class="withdrawRefunds">
+            <button onclick="withdrawFunds();">Withdraw</button>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+
+<!-- Provide Web3 framework -->
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+
+<script>
+
+// Connect to Ethereum Network/Blockchain
+if (typeof web3 !== 'undefined') {
+  web3 = new Web3(web3.currentProvider);
+  console.log('We already have a provider.');
+} else {
+  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")); 
+  console.log('We have set a new provider on Ganache chain at localhost:8454');
+}
+
+// Set the default account
+web3.eth.defaultAccount = web3.eth.accounts[0];
+console.log('Default account: ' + web3.eth.defaultAccount);
+
+// Provide the ABI to interact with the smart contract
+const FlightSuretyApp = web3.eth.contract([
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "buyInsurance",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "createFlight",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "fetchFlightStatus",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "fund",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            },
+            {
+                "name": "_name",
+                "type": "string"
+            }
+        ],
+        "name": "registerAirline",
+        "outputs": [
+            {
+                "name": "success",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "registerOracle",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_mode",
+                "type": "bool"
+            }
+        ],
+        "name": "setOperatingStatus",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "index",
+                "type": "uint8"
+            },
+            {
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "name": "statusCode",
+                "type": "uint8"
+            }
+        ],
+        "name": "submitOracleResponse",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "withdrawFunds",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_dataContract",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "name": "FlightStatusInfo",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "name": "OracleReport",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "index",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "OracleRequest",
+        "type": "event"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "checkFunds",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getMyIndexes",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8[3]"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "isOperational",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "REGISTRATION_FEE",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+]);
+
+// Connect to the smart contract by providing its ethereum address
+const instance = FlightSuretyApp.at('0xa0ad12c425aa5e43f26ea5dc6a3306c27fbc26f9');
+
+/* ============================================================================================================================
+=========== Starting actual functionality =====================================================================================
+============================================================================================================================ */
+
+const determineAddress = (airlineName) => {
+    let airlineAddress = "";
+    switch(airlineName) {
+        case "allNipon":
+        airlineAddress = "0xE711D19E409b4109bE006e0105c413Fd4969CF8D";
+        break;
+        case "cathayPacific":
+        airlineAddress = "";
+        break;
+        case "emirates":
+        airlineAddress = "";
+        break;
+        case "evaAir":
+        airlineAddress = "";
+        break;
+        case "garudaIndonesia":
+        airlineAddress = "";
+        break;
+        case "hainanAirlines":
+        airlineAddress = "";
+        break;
+        case "klmAirfrance":
+        airlineAddress = "";
+        break;
+        case "lufthansa":
+        airlineAddress = "";
+        break;
+        case "signaporeAirlines":
+        airlineAddress = "";
+        break;
+        case "qatarAirways":
+        airlineAddress = "";
+        break;
+        default:
+        airlineAddress ="";
+        break;
+    }
+    return airlineAddress;
+}
+
+// Get fund balance and convert to ETH with 3 decimals
+const registerAirline = async () => { 
+let airlineName = $('.registerAirlines select[name=airlines]').val();
+let airlineAddr = await determineAddress(airlineName);
+console.log(airlineAddr);
+instance.registerAirline(airlineAddr, airlineName, function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    alert(`Airline [${airlineName}] has been registered with the address: ${airlineAddr}.`);
+  }
+})};
+
+
+const fundAirline = () => { 
+instance.fund({value: web3.toWei(0.1)}, function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    alert(`Your airline has been funded with 0.1 ETH`);
+  }
+})};
+
+
+const createFlight = async () => { 
+let flightName = $('.createFlight input[name=flightName]').val();
+let timestamp = $('.createFlight input[name=timestamp]').val();
+instance.createFlight(flightName, timestamp, function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    alert(`Flight ${flightName} has been created.`);
+  }
+})};
+
+
+const insureFlight = async () => { 
+let airlineName = $('.insureFlight select[name=airlines]').val();
+let airlineAddr = await determineAddress(airlineName);
+let flightName = $('.insureFlight input[name=flightName]').val();
+let timestamp = $('.insureFlight input[name=timestamp]').val();
+let value = $('.insureFlight input[name=insuredValue]').val();
+instance.buyInsurance(airlineAddr, flightName, timestamp, {value: web3.toWei(0.01)}, function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    alert(`Flight ${flightName} has been insured for ${value * 1.5} ETH (refunds are x 1.5 of the paid value).`);
+  }
+})};
+
+
+const requestFlightStatus = async () => { 
+let airlineName = $('.requestFlightStatus select[name=airlines]').val();
+let airlineAddr = await determineAddress(airlineName);
+let flightName = $('.requestFlightStatus input[name=flightName]').val();
+let timestamp = $('.requestFlightStatus input[name=timestamp]').val();
+let value = $('.requestFlightStatus input[name=insuredValue]').val();
+instance.fetchFlightStatus(airlineAddr, flightName, timestamp, function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    alert(`Flight ${result[0]} has been created.`);
+  }
+})};
+
+
+const checkFunds = async () => { 
+instance.checkFunds(function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    $('.checkFunds .fundsValue').html(result[0]);
+  }
+})};
+
+
+const withdrawFunds = async () => { 
+instance.withdrawFunds(function(error, result) {
+  if (error) {
+    return error;
+  } else {
+    alert('Your funds have been withdrawn and send to your address.');
+  }
+})};
+
+
+
+// // Get all events for the Tx dashboard
+// const getEvents = () => { PHBacon.depositTx({}, { fromBlock: 0, toBlock: 'latest' }).get((error, result) => {
+//   if (error) { 
+//     return error;
+//   }
+//     else {
+//       console.log(result.length);
+//     }
+// });
+// }
+
+</script>
 
 </body>
 
