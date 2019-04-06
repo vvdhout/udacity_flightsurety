@@ -103,12 +103,7 @@ contract FlightSuretyApp {
     *
     */   
     function registerAirline (address _address, string _name) public isAirlineRegistered requireIsOperational() returns(bool success){
-        require(dataContract.isAirlineRegistered(_address) == false, "Airline is already registered.");
-        return dataContract.registerAirline(_address, _name, msg.sender);
-    }
-
-    function checkRegistrationStatus(address _address) view public returns(bool) {
-        return dataContract.isAirlineRegistered(_address);
+        return dataContract.registerAirline(_address, _name);
     }
     
     function fund() public payable isAirlineRegistered {
@@ -372,7 +367,7 @@ contract FlightSuretyData {
     *      Can only be called from FlightSuretyApp contract
     *
     */   
-    function registerAirline (address, string, address) external returns (bool);
+    function registerAirline (address, string) external returns (bool);
 
 
    /**
@@ -408,12 +403,10 @@ contract FlightSuretyData {
     */
     function() external payable;
     
-    function isAirlineRegistered(address _address) view external returns(bool);
+    function isAirlineRegistered(address _address) external returns(bool);
     
-    function isAirlineFunded(address _address) view external returns(bool);
+    function isAirlineFunded(address _address) external returns(bool);
     
     function checkFunds (address _address) view external returns (uint);
-    
-    function alreadyCalled(address _toRegister, address _caller) view external returns (bool);
 
 }

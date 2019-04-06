@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    // Provide jQuery framework
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <style>
@@ -80,6 +79,20 @@
         </ul>
     </div>
 
+    <h3>Who are you?</h3>
+    <select name="who">
+                <option value="passenger">Passenger</option>
+                <option value="owner">Contract Owner</option>
+                <option value="allNipon">ANA All Nippon Airways</option>
+                <option value="cathayPacific">Cathay Pacific Airways</option>
+                <option value="emirates">Emirates</option>
+                <option value="hainanAirlines">Hainan Airlines</option>
+                <option value="klmAirfrance">KLM-Airfrance</option>
+                <option value="lufthansa">Lufthansa</option>
+                <option value="signaporeAirlines">Signapore Airlines</option>
+                <option value="qatarAirways">Qatar Airways</option>
+    </select>
+
     <div class="box">
         <a name="registerAirline"></a>
         <h2>Register Airline</h2>
@@ -88,8 +101,6 @@
                 <option value="allNipon">ANA All Nippon Airways</option>
                 <option value="cathayPacific">Cathay Pacific Airways</option>
                 <option value="emirates">Emirates</option>
-                <option value="evaAir">EVA Air</option>
-                <option value="garudaIndonesia">Garuda Indonesia</option>
                 <option value="hainanAirlines">Hainan Airlines</option>
                 <option value="klmAirfrance">KLM-Airfrance</option>
                 <option value="lufthansa">Lufthansa</option>
@@ -97,6 +108,16 @@
                 <option value="qatarAirways">Qatar Airways</option>
             </select>
             <button onclick="registerAirline();">Register Airline</button>
+        </div>
+        <div class="airlineStatus">
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
         </div>
     </div>
 
@@ -184,48 +205,62 @@
 
 </div>
 
-<script>
-
 <!-- Provide Web3 framework -->
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 
 <script>
 
 // Connect to Ethereum Network/Blockchain
-if (typeof web3 !== 'undefined') {
-  web3 = new Web3(web3.currentProvider);
-  console.log('We already have a provider.');
-} else {
+// if (typeof web3 !== 'undefined') {
+//   web3 = new Web3(web3.currentProvider);
+//   console.log('We already have a provider.');
+// } else {
   web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")); 
-  console.log('We have set a new provider on Ganache chain at localhost:8454');
-}
+  console.log('We have set a new provider on Ganache chain at localhost:7454');
+// }
 
 // Set the default account
 web3.eth.defaultAccount = web3.eth.accounts[0];
+let acc = web3.eth.accounts;
 console.log('Default account: ' + web3.eth.defaultAccount);
 
 // Provide the ABI to interact with the smart contract
 const FlightSuretyApp = web3.eth.contract([
     {
-        "constant": false,
-        "inputs": [
+        "constant": true,
+        "inputs": [],
+        "name": "checkFunds",
+        "outputs": [
             {
-                "name": "airline",
-                "type": "address"
-            },
-            {
-                "name": "flight",
-                "type": "string"
-            },
-            {
-                "name": "timestamp",
+                "name": "",
                 "type": "uint256"
             }
         ],
-        "name": "buyInsurance",
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_mode",
+                "type": "bool"
+            }
+        ],
+        "name": "setOperatingStatus",
         "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "withdrawFunds",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -267,42 +302,10 @@ const FlightSuretyApp = web3.eth.contract([
                 "type": "uint256"
             }
         ],
-        "name": "fetchFlightStatus",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [],
-        "name": "fund",
+        "name": "buyInsurance",
         "outputs": [],
         "payable": true,
         "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "_address",
-                "type": "address"
-            },
-            {
-                "name": "_name",
-                "type": "string"
-            }
-        ],
-        "name": "registerAirline",
-        "outputs": [
-            {
-                "name": "success",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -315,17 +318,59 @@ const FlightSuretyApp = web3.eth.contract([
         "type": "function"
     },
     {
-        "constant": false,
+        "constant": true,
+        "inputs": [],
+        "name": "getMyIndexes",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8[3]"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "REGISTRATION_FEE",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
         "inputs": [
             {
-                "name": "_mode",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "checkRegistrationStatus",
+        "outputs": [
+            {
+                "name": "",
                 "type": "bool"
             }
         ],
-        "name": "setOperatingStatus",
-        "outputs": [],
         "payable": false,
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "fund",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
         "type": "function"
     },
     {
@@ -359,9 +404,59 @@ const FlightSuretyApp = web3.eth.contract([
         "type": "function"
     },
     {
-        "constant": false,
+        "constant": true,
         "inputs": [],
-        "name": "withdrawFunds",
+        "name": "isOperational",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            },
+            {
+                "name": "_name",
+                "type": "string"
+            }
+        ],
+        "name": "registerAirline",
+        "outputs": [
+            {
+                "name": "success",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "airline",
+                "type": "address"
+            },
+            {
+                "name": "flight",
+                "type": "string"
+            },
+            {
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "fetchFlightStatus",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -458,99 +553,48 @@ const FlightSuretyApp = web3.eth.contract([
         ],
         "name": "OracleRequest",
         "type": "event"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "checkFunds",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "getMyIndexes",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint8[3]"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "isOperational",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "REGISTRATION_FEE",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
     }
 ]);
 
 // Connect to the smart contract by providing its ethereum address
-const instance = FlightSuretyApp.at('0xa0ad12c425aa5e43f26ea5dc6a3306c27fbc26f9');
+const instance = FlightSuretyApp.at('0x9776bd61603a5aB99b35c3246DBBFeF8a43DBD5D');
 
 /* ============================================================================================================================
 =========== Starting actual functionality =====================================================================================
 ============================================================================================================================ */
 
-const determineAddress = (airlineName) => {
+const determineAddress = async (airlineName) => {
     let airlineAddress = "";
     switch(airlineName) {
         case "allNipon":
-        airlineAddress = "0xE711D19E409b4109bE006e0105c413Fd4969CF8D";
+        airlineAddress = acc[1];
         break;
         case "cathayPacific":
-        airlineAddress = "";
+        airlineAddress = acc[2];
         break;
         case "emirates":
-        airlineAddress = "";
-        break;
-        case "evaAir":
-        airlineAddress = "";
-        break;
-        case "garudaIndonesia":
-        airlineAddress = "";
+        airlineAddress = acc[3];
         break;
         case "hainanAirlines":
-        airlineAddress = "";
+        airlineAddress = acc[4];
         break;
         case "klmAirfrance":
-        airlineAddress = "";
+        airlineAddress = acc[5];
         break;
         case "lufthansa":
-        airlineAddress = "";
+        airlineAddress = acc[6];
         break;
         case "signaporeAirlines":
-        airlineAddress = "";
+        airlineAddress = acc[7];
         break;
         case "qatarAirways":
-        airlineAddress = "";
+        airlineAddress = acc[8];
+        break;
+        case "passenger":
+        airlineAddress = acc[9];
+        break;
+        case "owner":
+        airlineAddress = acc[0];
         break;
         default:
         airlineAddress ="";
@@ -559,36 +603,58 @@ const determineAddress = (airlineName) => {
     return airlineAddress;
 }
 
+let airlinesArr = ["allNipon", "cathayPacific", "emirates", "hainanAirlines", "klmAirfrance", "lufthansa", "signaporeAirlines", "qatarAirways"];
+
+const getAirlines = async () => {
+    for (let i = 0; i < airlinesArr.length; i++) {
+        $('.airlineStatus p:nth-child(' + ( i + 1) + ')').empty();
+        let airlineAddr = await determineAddress(airlinesArr[i]);
+        let status = await instance.checkRegistrationStatus(airlineAddr);
+        $('.airlineStatus p:nth-child(' + ( i + 1) + ')').text(airlinesArr[i] + " registered: " + status);
+    }
+}
+
+getAirlines();
+
 // Get fund balance and convert to ETH with 3 decimals
-const registerAirline = async () => { 
+const registerAirline = async () => {
+let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
 let airlineName = $('.registerAirlines select[name=airlines]').val();
 let airlineAddr = await determineAddress(airlineName);
-console.log(airlineAddr);
-instance.registerAirline(airlineAddr, airlineName, function(error, result) {
+instance.registerAirline(airlineAddr, airlineName, {from: who, gas: 1000000}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
-    alert(`Airline [${airlineName}] has been registered with the address: ${airlineAddr}.`);
+    location.reload();
+    // alert(`Airline [${airlineName}] has been registered with the address: ${airlineAddr}.`);
   }
 })};
 
 
-const fundAirline = () => { 
-instance.fund({value: web3.toWei(0.1)}, function(error, result) {
+const fundAirline = async () => { 
+let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
+instance.fund({value: web3.toWei(10), from: who}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
-    alert(`Your airline has been funded with 0.1 ETH`);
+    alert(`Your airline has been funded with 10 ETH`);
   }
 })};
 
 
 const createFlight = async () => { 
+    let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
 let flightName = $('.createFlight input[name=flightName]').val();
 let timestamp = $('.createFlight input[name=timestamp]').val();
-instance.createFlight(flightName, timestamp, function(error, result) {
+instance.createFlight(flightName, timestamp, {gas: 1000000, from: who}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
     alert(`Flight ${flightName} has been created.`);
   }
@@ -596,49 +662,62 @@ instance.createFlight(flightName, timestamp, function(error, result) {
 
 
 const insureFlight = async () => { 
+    let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
 let airlineName = $('.insureFlight select[name=airlines]').val();
 let airlineAddr = await determineAddress(airlineName);
 let flightName = $('.insureFlight input[name=flightName]').val();
 let timestamp = $('.insureFlight input[name=timestamp]').val();
-let value = $('.insureFlight input[name=insuredValue]').val();
-instance.buyInsurance(airlineAddr, flightName, timestamp, {value: web3.toWei(0.01)}, function(error, result) {
+let valueX = $('.insureFlight input[name=insuredValue]').val();
+instance.buyInsurance(airlineAddr, flightName, timestamp, {value: web3.toWei(0.01), from: who, gas: 1000000}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
-    alert(`Flight ${flightName} has been insured for ${value * 1.5} ETH (refunds are x 1.5 of the paid value).`);
+    alert(`Flight ${flightName} has been insured for ${valueX * 1.5} ETH (refunds are x 1.5 of the paid value).`);
   }
 })};
 
 
 const requestFlightStatus = async () => { 
+    let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
 let airlineName = $('.requestFlightStatus select[name=airlines]').val();
 let airlineAddr = await determineAddress(airlineName);
 let flightName = $('.requestFlightStatus input[name=flightName]').val();
 let timestamp = $('.requestFlightStatus input[name=timestamp]').val();
 let value = $('.requestFlightStatus input[name=insuredValue]').val();
-instance.fetchFlightStatus(airlineAddr, flightName, timestamp, function(error, result) {
+instance.fetchFlightStatus(airlineAddr, flightName, timestamp, {from: who}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
-    alert(`Flight ${result[0]} has been created.`);
+    alert(`Flight status requested at Oracles.`);
   }
 })};
 
 
 const checkFunds = async () => { 
-instance.checkFunds(function(error, result) {
+    let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
+instance.checkFunds({from: who}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
-    $('.checkFunds .fundsValue').html(result[0]);
+    console.log(result);
+    $('.box .fundsValue').text(result);
   }
 })};
 
 
 const withdrawFunds = async () => { 
-instance.withdrawFunds(function(error, result) {
+    let whoName = $('select[name=who]').val();
+let who = await determineAddress(whoName);
+console.log(`You are ${whoName} with address ${who}`);
+instance.withdrawFunds({from: who, gas: 1000000}, function(error, result) {
   if (error) {
-    return error;
+    console.log(error);
   } else {
     alert('Your funds have been withdrawn and send to your address.');
   }
@@ -649,7 +728,7 @@ instance.withdrawFunds(function(error, result) {
 // // Get all events for the Tx dashboard
 // const getEvents = () => { PHBacon.depositTx({}, { fromBlock: 0, toBlock: 'latest' }).get((error, result) => {
 //   if (error) { 
-//     return error;
+//     console.log(error);
 //   }
 //     else {
 //       console.log(result.length);

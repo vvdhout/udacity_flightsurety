@@ -4,14 +4,16 @@ const fs = require('fs');
 
 module.exports = function(deployer) {
 
-    let firstAirline = '0xedB6c2D702aa3e9C0705298760fCcE5EaC96d258';
-    deployer.deploy(FlightSuretyData)
+    let firstAirline = '0x335e27180EF8F6eAED5800D3f9e76Fa2f780Ad2A';
+    deployer.deploy(FlightSuretyData,firstAirline, "#1 Airline")
     .then(() => {
-        return deployer.deploy(FlightSuretyApp)
-                .then(() => {
+        return deployer.deploy(FlightSuretyApp,FlightSuretyData.address)
+                .then( async () => {
+                    let instance = await FlightSuretyData.deployed();
+                    await instance.authorizeContract(FlightSuretyApp.address);
                     let config = {
                         localhost: {
-                            url: 'http://localhost:8545',
+                            url: 'http://localhost:7545',
                             dataAddress: FlightSuretyData.address,
                             appAddress: FlightSuretyApp.address
                         }

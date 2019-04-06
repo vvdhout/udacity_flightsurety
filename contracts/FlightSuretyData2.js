@@ -8,7 +8,7 @@ contract FlightSuretyData {
 
     address private contractOwner;                                      // Account used to deploy contract
     bool private operational = true;                                    // Blocks all state changes throughout the contract if false
-    
+
     struct Airline {
         string name;
         bool registered;
@@ -16,9 +16,6 @@ contract FlightSuretyData {
     }
 
     mapping (address => Airline) airlines;
-    address[] public airlineArray;
-    
-    mapping (address => address[]) airlinesPushRegistration;
     
     struct Passenger {
         // Mapping a flightId to an insurance amount
@@ -28,6 +25,7 @@ contract FlightSuretyData {
     }
     
     mapping (address => Passenger) passengers;
+    
     
     mapping (bytes32 => address[]) insurees;
 
@@ -97,16 +95,6 @@ contract FlightSuretyData {
     function isAirlineFunded(address _address) view external returns (bool) {
         return airlines[_address].funded;
     }
-    
-    function alreadyCalled(address _toRegister, address _caller) view external returns (bool) {
-        for (uint i = 0; i < airlinesPushRegistration[_toRegister].length; i++) {
-            if(airlinesPushRegistration[_toRegister][i] == _caller) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /*
     * @dev Get operating status of contract
@@ -133,17 +121,10 @@ contract FlightSuretyData {
     
     // AIRLINE FUNCTIONALITY +++++++++++++++++++++++++++++
     
-    function registerAirline (address _address, string _name, address _caller) external isCallerAuthorized requireIsOperational returns(bool) {
-        require(this.alreadyCalled(_address, _caller) == false, "This airline already send a request to register.");
-        if(airlineArray.length > 4 && airlinesPushRegistration[_address].length < (airlineArray.length / 2)) {
-            airlinesPushRegistration[_address].push(_caller);
-            return false;
-        } else {
-            airlineArray.push(_address);
-            airlines[_address].name = _name;
-            airlines[_address].registered = true;
-            return (airlines[_address].registered);
-        }
+    function registerAirline (address _address, string _name) external isCallerAuthorized requireIsOperational returns(bool) {
+        airlines[_address].name = _name;
+        airlines[_address].registered = true;
+        return (airlines[_address].registered);
     }
     
     function fund(address _address) external isCallerAuthorized {
@@ -202,3 +183,4 @@ contract FlightSuretyData {
 
 
 }
+
