@@ -215,8 +215,8 @@
 //   web3 = new Web3(web3.currentProvider);
 //   console.log('We already have a provider.');
 // } else {
-  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")); 
-  console.log('We have set a new provider on Ganache chain at localhost:7454');
+  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545")); 
+  console.log('We have set a new provider on Ganache chain at localhost:8454');
 // }
 
 // Set the default account
@@ -557,7 +557,7 @@ const FlightSuretyApp = web3.eth.contract([
 ]);
 
 // Connect to the smart contract by providing its ethereum address
-const instance = FlightSuretyApp.at('0x9776bd61603a5aB99b35c3246DBBFeF8a43DBD5D');
+const instance = FlightSuretyApp.at('0x699Bd4cB0d73f44577Ab29837e1CF66958eD90A1');
 
 /* ============================================================================================================================
 =========== Starting actual functionality =====================================================================================
